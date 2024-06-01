@@ -27,3 +27,19 @@ az webapp list --resource-group tailspin-space-game-rg --query "[].{hostName: de
 tailspin-space-game-web-dev-2296.azurewebsites.net      Running
 tailspin-space-game-web-staging-2296.azurewebsites.net  Running
 tailspin-space-game-web-test-2296.azurewebsites.net     Running
+
+------------------------------------------------------------------------------------------
+
+staging=$(az webapp list --resource-group tailspin-space-game-rg --query "[?contains(@.name, 'tailspin-space-game-web-staging')].{name: name}" --output tsv)
+
+echo $staging
+
+az webapp deployment slot create --name $staging --resource-group tailspin-space-game-rg --slot swap
+
+az webapp deployment slot list --name $staging --resource-group tailspin-space-game-rg --query [].hostNames --output tsv
+
+tailspin-space-game-web-staging-2296-swap.azurewebsites.net
+
+------------------------------------------------------------------------------------------
+
+az group delete --name tailspin-space-game-rg
